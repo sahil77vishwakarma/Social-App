@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import com.example.socialapp.daos.UserDao
 import com.example.socialapp.databinding.ActivitySignInBinding
+import com.example.socialapp.models.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -27,9 +30,10 @@ import kotlinx.coroutines.withContext
 
     private lateinit var binding:ActivitySignInBinding
 
-    private lateinit var googleSignInClient:GoogleSignInClient
-    private val RC_SIGN_IN: Int =123
-    private lateinit var auth:FirebaseAuth
+     private val RC_SIGN_IN: Int = 123
+     private val TAG = "SignInActivity Tag"
+     private lateinit var googleSignInClient: GoogleSignInClient
+     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,16 +75,17 @@ import kotlinx.coroutines.withContext
         }
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)!!
-            Log.d("TAG", "firebaseAuthWithGoogle:" + account.id)
-            firebaseAuthWithGoogle(account.idToken!!)
-        } catch (e: ApiException) {
-            // Google Sign In failed, update UI appropriately
-            Log.w("TAG", "Google sign in failed", e)
-        }
-    }
+     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+         try {
+             val account =
+                 completedTask.getResult(ApiException::class.java)!!
+             Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+             firebaseAuthWithGoogle(account.idToken!!)
+         } catch (e: ApiException) {
+             Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+
+         }
+     }
 
      private fun firebaseAuthWithGoogle(idToken: String) {
          val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -97,6 +102,10 @@ import kotlinx.coroutines.withContext
 
      private fun updateUI(firebaseUser: FirebaseUser?) {
         if(firebaseUser != null){
+            val user = User(firebaseUser.uid,firebaseUser.displayName,firebaseUser.photoUrl.toString())
+            val userDao= UserDao()
+            userDao.addUser(user)
+
             val mainActivityIntent=Intent(this,MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()

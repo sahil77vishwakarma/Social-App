@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1071945702771",
+    "firebase_url": "https://social-app-663b6-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "social-app-663b6",
     "storage_bucket": "social-app-663b6.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1071945702771-ec1g4e278144j7liu39f8gaeh0sr26ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socialapp",
+            "certificate_hash": "10248550b35ef85307c8e2ead732cacf23a8df37"
+          }
+        },
         {
           "client_id": "1071945702771-1cf5jv2im4vs0jm23jate23be7atko48.apps.googleusercontent.com",
           "client_type": 3
